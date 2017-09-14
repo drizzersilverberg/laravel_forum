@@ -22,3 +22,38 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Thread::class, function($faker){
+	return [
+		'user_id' => function(){
+			return factory('App\User')->create()->id;
+		},
+		'title'	=> $faker->sentence,
+		'body' 	=> $faker->paragraph,
+	];
+});
+
+/*
+	$ php artisan tinker
+	>>> factory('App\Thread',50)->create();
+*/
+
+$factory->define(App\Reply::class, function($faker){
+	return [
+		'thread_id' => function(){
+			return factory('App\Thread')->create()->id;
+		},
+		'user_id' => function(){
+			return factory('App\User')->create()->id;
+		},
+		'body' 	=> $faker->paragraph,
+	];
+});
+
+/*
+	$ php artisan migrate:refresh
+	$ php artisan tinker
+	>>> $threads = factory('App\Thread',50)->create();
+	>>> $threads->each(function ($thread){ factory('App\Reply', 10)->create(['thread_id'] => $thread->id);});
+*/
+
