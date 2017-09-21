@@ -11,7 +11,13 @@ class ReplyController extends Controller
 	{
 		$this->middleware('auth');
 	}
-    public function store(Thread $thread)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \app\Channel     $channelId
+     * @return \app\Thread      $thread
+     */
+    public function store($channelId, Thread $thread)
     {
     	$thread->addReply([
     		'body'		=> request('body'),
