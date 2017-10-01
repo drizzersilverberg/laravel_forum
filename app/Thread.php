@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
     protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder){
+            $builder->withCount('replies');
+        });
+    }
     
     public function path()
     {
@@ -16,6 +25,14 @@ class Thread extends Model
     public function replies()
     {
     	return $this->hasMany(Reply::class);
+    }
+
+    public function getReplyCountAttribute()
+    {
+        /* 
+            This is eloquent accessor. you can access this method with $thread->reply_count or $thread->replyCount.
+        */
+        return $this->replies()->count();
     }
 
     public function creator()
