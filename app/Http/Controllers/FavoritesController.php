@@ -13,9 +13,15 @@ class FavoritesController extends Controller
 		$this->middleware('auth');
 	}
 
-    public function store(Reply $reply)
-    {
+	public function store(Reply $reply)
+	{
 		$reply->favorite();
+		
 		return back();
-    }
+	}
+
+	public function destroy(Reply $reply)
+	{
+		$reply->unfavorite();
+	}
 }
